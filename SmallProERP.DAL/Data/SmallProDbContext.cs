@@ -64,9 +64,11 @@ namespace SmallProERP.DAL.Data
             modelBuilder.ApplyConfiguration(new  PurchaseOrderConfiguration());
             modelBuilder.ApplyConfiguration(new PurchaseOrderItemConfiguration());
             modelBuilder.ApplyConfiguration(new InventoryMovementConfiguration());
-           
+            modelBuilder.ApplyConfiguration(new AiInsightLogConfiguration());
+            modelBuilder.ApplyConfiguration(new OcrExtractionResultConfiguration());
 
-            
+
+
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<IdentityRole<int>>().ToTable("Roles");
             modelBuilder.Entity<IdentityUserRole<int>>().ToTable("UserRoles");
