@@ -43,6 +43,9 @@ namespace SmallProERP.DAL.Data
         public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; }
         public DbSet<InventoryMovement> InventoryMovements { get; set; }
 
+        public DbSet<OcrExtractionResult> OcrExtractionResults { get; set; }
+        public DbSet<AiInsightLog> AiInsightLogs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

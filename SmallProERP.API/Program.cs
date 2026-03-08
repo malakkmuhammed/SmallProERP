@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SmallProERP.BLL.Services.Implementations;
+using SmallProERP.BLL.Services.Interfaces;
 using SmallProERP.DAL.Data;
 using SmallProERP.Models.Entities;
+using SmallProERP.BLL.Services;      // ? ADD
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,9 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<SmallProDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddScoped<IProductService, ProductService>();  // ? ADD
 
 
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
