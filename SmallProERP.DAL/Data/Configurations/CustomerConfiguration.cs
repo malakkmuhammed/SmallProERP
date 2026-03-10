@@ -16,6 +16,7 @@ namespace SmallProERP.DAL.Data.Configurations
         {
             builder.HasKey(c => c.CustomerId);
 
+
             builder.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);

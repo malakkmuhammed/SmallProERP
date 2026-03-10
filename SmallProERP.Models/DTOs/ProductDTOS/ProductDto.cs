@@ -17,8 +17,11 @@ namespace SmallProERP.Models.DTOs.ProductDTOS
         public int MinimumStockLevel { get; set; }
         public decimal PurchasePrice { get; set; }
         public decimal SellingPrice { get; set; }
+        public decimal ProfitMargin { get; set; }
         public int? SupplierId { get; set; }
+        public string? SupplierName { get; set; }
         public bool IsLowStock { get; set; }
+        public int StockDeficit { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
