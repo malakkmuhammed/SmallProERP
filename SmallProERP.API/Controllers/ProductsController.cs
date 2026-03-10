@@ -15,7 +15,7 @@ namespace SmallProERP.Api.Controllers
             _productService = productService;
         }
 
-     
+        // GET /api/products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll()
         {
@@ -23,7 +23,7 @@ namespace SmallProERP.Api.Controllers
             return Ok(products);
         }
 
- 
+     
         [HttpGet("low-stock")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetLowStock()
         {
@@ -31,7 +31,7 @@ namespace SmallProERP.Api.Controllers
             return Ok(products);
         }
 
-   
+        // GET /api/products/{id}
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductDto>> GetById(int id)
         {
@@ -43,10 +43,11 @@ namespace SmallProERP.Api.Controllers
             return Ok(product);
         }
 
-
+        // POST /api/products
         [HttpPost]
         public async Task<ActionResult<ProductDto>> Create([FromBody] CreateProductDto dto)
         {
+            
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -61,11 +62,12 @@ namespace SmallProERP.Api.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                // Catches duplicate ProductCode within this tenant
                 return BadRequest(new { message = ex.Message });
             }
         }
 
-     
+        // PUT /api/products/{id}
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto dto)
         {
@@ -80,6 +82,7 @@ namespace SmallProERP.Api.Controllers
             return NoContent();
         }
 
+        // DELETE /api/products/{id}
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

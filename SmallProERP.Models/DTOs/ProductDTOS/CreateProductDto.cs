@@ -33,6 +33,9 @@ namespace SmallProERP.Models.DTOs.ProductDTOS
 
         [Required(ErrorMessage = "Purchase price is required")]
         [Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Purchase price must be greater than 0")]
+
+        [Required(ErrorMessage = "Purchase price is required.")]
+        [Range(0.0, double.MaxValue, ErrorMessage = "Purchase price must be 0 or greater.")]
         public decimal PurchasePrice { get; set; }
 
         [Required(ErrorMessage = "Selling price is required")]

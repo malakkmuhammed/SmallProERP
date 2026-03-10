@@ -17,7 +17,6 @@ namespace SmallProERP.API.Controllers
         }
 
         // GET /api/suppliers
-    
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SupplierDto>>> GetAll()
         {
@@ -26,7 +25,6 @@ namespace SmallProERP.API.Controllers
         }
 
         // GET /api/suppliers/{id}
-        
         [HttpGet("{id:int}")]
         public async Task<ActionResult<SupplierDto>> GetById(int id)
         {
@@ -39,7 +37,6 @@ namespace SmallProERP.API.Controllers
         }
 
         // POST /api/suppliers
-       
         [HttpPost]
         public async Task<ActionResult<SupplierDto>> Create([FromBody] CreateSupplierDto dto)
         {
@@ -55,7 +52,6 @@ namespace SmallProERP.API.Controllers
         }
 
         // PUT /api/suppliers/{id}
-      
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateSupplierDto dto)
         {
@@ -71,7 +67,6 @@ namespace SmallProERP.API.Controllers
         }
 
         // DELETE /api/suppliers/{id}
-    
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
