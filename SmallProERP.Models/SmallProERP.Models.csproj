@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Auth\" />
-    <Folder Include="DTOs\CustomerDtos\" />
   </ItemGroup>
 
   <ItemGroup>
