@@ -15,7 +15,7 @@ namespace SmallProERP.BLL.Services.Implementations
     {
         private readonly SmallProDbContext _context;
 
-        // ── Temporary fixed tenant until JWT is wired in Phase 7 ─────────────
+        //Temporary fixed tenant until JWT 
         private const int FixedTenantId = 1;
 
         public SupplierService(SmallProDbContext context)

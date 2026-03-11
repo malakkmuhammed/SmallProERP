@@ -18,9 +18,7 @@ namespace SmallProERP.Models.Entities
         public DateTime CreatedAt { get; set; }
         public int? CreatedBy { get; set; }
 
-        
         public Tenant? Tenant { get; set; }
-
         public User? Creator { get; set; }
     }
 }

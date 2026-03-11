@@ -21,7 +21,7 @@ builder.Services.AddDbContext<SmallProDbContext>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();  // ? ADD
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
-//builder.Services.AddScoped<ICustomerInteractionService, CustomerInteractionService>();
+builder.Services.AddScoped<ICustomerInteractionService, CustomerInteractionService>();
 
 
 
