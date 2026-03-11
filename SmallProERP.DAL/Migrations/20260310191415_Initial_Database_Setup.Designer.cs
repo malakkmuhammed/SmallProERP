@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmallProERP.DAL.Data;
 
@@ -11,9 +12,11 @@ using SmallProERP.DAL.Data;
 namespace SmallProERP.DAL.Migrations
 {
     [DbContext(typeof(SmallProDbContext))]
-    partial class SmallProDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260310191415_Initial_Database_Setup")]
+    partial class Initial_Database_Setup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -9,32 +9,18 @@ namespace SmallProERP.BLL.Services.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductDto>> GetAllAsync();
-
-        
-        /// Returns a single product by ID.
-        /// Returns null if not found or belongs to a different tenant.
-        
-        Task<ProductDto?> GetByIdAsync(int id);
-
-        
-        /// Creates a new product.
-        /// Throws InvalidOperationException if ProductCode already exists for this tenant.
-       
-        Task<ProductDto> CreateAsync(CreateProductDto dto);
-
-        /// Updates an existing product.
-        /// Returns false if the product was not found (or belongs to another tenant).
-        
-        Task<bool> UpdateAsync(int id, UpdateProductDto dto);
-
-        
-        /// Deletes a product by ID.
-        /// Returns false if the product was not found (or belongs to another tenant).
-       
-        Task<bool> DeleteAsync(int id);
-
-        /// Returns products where Quantity is below MinimumStockLevel
-        Task<IEnumerable<ProductDto>> GetLowStockProductsAsync();
+        Task<IEnumerable<ProductDto>> GetAllAsync(int tenantId);
+        Task<ProductDto?> GetByIdAsync(int id, int tenantId);
+        Task<ProductDto?> GetByCodeAsync(string code, int tenantId);
+        Task<ProductDto> CreateAsync(CreateProductDto dto, int tenantId);
+        Task<bool> UpdateAsync(int id, UpdateProductDto dto, int tenantId);
+        Task<bool> DeleteAsync(int id, int tenantId);
+        Task<IEnumerable<ProductDto>> SearchAsync(string searchTerm, int tenantId);
+        Task<IEnumerable<ProductDto>> GetByCategoryAsync(string category, int tenantId);
+        Task<IEnumerable<ProductDto>> GetBySupplierAsync(int supplierId, int tenantId);
+        Task<IEnumerable<ProductDto>> GetLowStockProductsAsync(int tenantId);
+        Task<bool> AdjustStockAsync(StockAdjustmentDto dto, int tenantId, int userId);
+        Task<IEnumerable<string>> GetAllCategoriesAsync(int tenantId);
+        Task<decimal> GetTotalInventoryValueAsync(int tenantId);
     }
 }

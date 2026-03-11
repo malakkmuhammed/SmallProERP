@@ -1,4 +1,5 @@
 ﻿using SmallProERP.Models.DTOs.ProductDTOS;
+using SmallProERP.Models.DTOs.PurchaseOrderDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

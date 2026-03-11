@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmallProERP.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace SmallProERP.Models.Entities
 
         public DateTime InteractionDate { get; set; }
 
-        public string? Type { get; set; }
+        public InteractionType Type { get; set; }
 
         public string Description { get; set; } = string.Empty;
 

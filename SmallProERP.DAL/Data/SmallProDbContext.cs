@@ -91,13 +91,13 @@ namespace SmallProERP.DAL.Data
             //modelBuilder.Entity<Product>()
             //    .HasQueryFilter(p => p.TenantId == CurrentTenantId); //for testing 
 
-            modelBuilder.Entity<Product>()
-            .HasQueryFilter(p => p.TenantId == _currentTenantId);
+            //modelBuilder.Entity<Product>()
+            //.HasQueryFilter(p => p.TenantId == _currentTenantId);
 
             //modelBuilder.Entity<Supplier>()
             //.HasQueryFilter(s => s.TenantId == CurrentTenantId);   //for testing 
-            modelBuilder.Entity<Supplier>()
-                .HasQueryFilter(s => s.TenantId == _currentTenantId);
+            //modelBuilder.Entity<Supplier>()
+            //    .HasQueryFilter(s => s.TenantId == _currentTenantId);
 
             modelBuilder.Entity<Quotation>()
                 .HasQueryFilter(q => q.TenantId == _currentTenantId);
@@ -111,14 +111,14 @@ namespace SmallProERP.DAL.Data
             modelBuilder.Entity<SaleItem>()
                 .HasQueryFilter(si => si.TenantId == _currentTenantId);
 
-            modelBuilder.Entity<PurchaseOrder>()
-                .HasQueryFilter(po => po.TenantId == _currentTenantId);
+            //modelBuilder.Entity<PurchaseOrder>()
+            //    .HasQueryFilter(po => po.TenantId == _currentTenantId);
 
-            modelBuilder.Entity<PurchaseOrderItem>()
-                .HasQueryFilter(poi => poi.TenantId == _currentTenantId);
+            //modelBuilder.Entity<PurchaseOrderItem>()
+            //    .HasQueryFilter(poi => poi.TenantId == _currentTenantId);
 
-            modelBuilder.Entity<InventoryMovement>()
-                .HasQueryFilter(im => im.TenantId == _currentTenantId);
+            //modelBuilder.Entity<InventoryMovement>()
+            //    .HasQueryFilter(im => im.TenantId == _currentTenantId);
         }
     }
 }
