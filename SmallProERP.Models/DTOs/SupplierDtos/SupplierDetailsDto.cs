@@ -19,7 +19,7 @@ namespace SmallProERP.Models.DTOs.SupplierDtos
         public DateTime CreatedAt { get; set; }
 
         public List<ProductDto> Products { get; set; } = new();
-        //public List<PurchaseOrderDto> PurchaseOrders { get; set; } = new();
+        public List<PurchaseOrderDto> PurchaseOrders { get; set; } = new();
 
         public int TotalProductsSupplied { get; set; }
         public int TotalPurchaseOrders { get; set; }

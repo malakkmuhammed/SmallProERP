@@ -20,8 +20,4 @@
     <ProjectReference Include="..\SmallProERP.Models\SmallProERP.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Middleware\" />
-  </ItemGroup>
-
 </Project>
