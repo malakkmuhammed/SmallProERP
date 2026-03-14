@@ -16,7 +16,7 @@ namespace SmallProERP.DAL.Data
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private int? _currentTenantId;
-        public int CurrentTenantId => _currentTenantId ?? 1; //for testing
+       
 
         public SmallProDbContext(
             DbContextOptions<SmallProDbContext> options,
@@ -88,16 +88,12 @@ namespace SmallProERP.DAL.Data
             modelBuilder.Entity<CustomerInteraction>()
                 .HasQueryFilter(ci => ci.TenantId == _currentTenantId);
 
-            //modelBuilder.Entity<Product>()
-            //    .HasQueryFilter(p => p.TenantId == CurrentTenantId); //for testing 
+            
 
             //modelBuilder.Entity<Product>()
             //.HasQueryFilter(p => p.TenantId == _currentTenantId);
 
-            //modelBuilder.Entity<Supplier>()
-            //.HasQueryFilter(s => s.TenantId == CurrentTenantId);   //for testing 
-            //modelBuilder.Entity<Supplier>()
-            //    .HasQueryFilter(s => s.TenantId == _currentTenantId);
+        
 
             modelBuilder.Entity<Quotation>()
                 .HasQueryFilter(q => q.TenantId == _currentTenantId);
