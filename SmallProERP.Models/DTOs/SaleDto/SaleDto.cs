@@ -10,8 +10,9 @@ namespace SmallProERP.Models.DTOs.SaleDto
     {
         public int SaleId { get; set; }
         public string InvoiceNumber { get; set; } = string.Empty;
-        public int? QuotationId { get; set; }        // reference back to the source quotation
+        public int? QuotationId { get; set; }
         public int CustomerId { get; set; }
+        public string CustomerName { get; set; } = string.Empty;   // resolved from navigation
         public decimal Subtotal { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal TotalAmount { get; set; }
