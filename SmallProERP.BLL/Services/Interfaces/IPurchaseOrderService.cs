@@ -25,5 +25,6 @@ namespace SmallProERP.BLL.Services.Interfaces
         Task<IEnumerable<PurchaseOrderDto>> GetByStatusAsync(POStatus status, int tenantId);
         Task<IEnumerable<PurchaseOrderDto>> GetBySupplierAsync(int supplierId, int tenantId);
         Task<IEnumerable<PurchaseOrderDto>> GetPendingReceiptAsync(int tenantId);
+        Task<PurchaseOrderDocumentDto?> GetDocumentAsync(int id, int tenantId);
     }
 }
