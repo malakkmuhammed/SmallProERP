@@ -15,17 +15,9 @@ namespace SmallProERP.Models.DTOs.SaleDto
 
         public int? QuotationId { get; set; }
 
-        [Required(ErrorMessage = "Subtotal is required.")]
-        [Range(0.0, double.MaxValue, ErrorMessage = "Subtotal must be 0 or greater.")]
-        public decimal Subtotal { get; set; }
-
         [Required(ErrorMessage = "Tax amount is required.")]
         [Range(0.0, double.MaxValue, ErrorMessage = "Tax amount must be 0 or greater.")]
         public decimal TaxAmount { get; set; }
-
-        [Required(ErrorMessage = "Total amount is required.")]
-        [Range(0.0, double.MaxValue, ErrorMessage = "Total amount must be 0 or greater.")]
-        public decimal TotalAmount { get; set; }
 
         [Required(ErrorMessage = "Invoice date is required.")]
         public DateTime InvoiceDate { get; set; }

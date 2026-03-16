@@ -11,12 +11,10 @@ namespace SmallProERP.Models.DTOs.SaleDto
         public int TotalInvoices { get; set; }
         public int PaidCount { get; set; }
         public int UnpaidCount { get; set; }
-
-        public decimal TotalRevenue { get; set; }        // sum of all TotalAmount
-        public decimal CollectedRevenue { get; set; }    // sum of paid invoices
-        public decimal OutstandingAmount { get; set; }   // sum of unpaid invoices
-
-        public int OverdueCount { get; set; }            // unpaid AND past DueDate
-        public decimal OverdueAmount { get; set; }       // sum of overdue invoices
+        public decimal TotalRevenue { get; set; }
+        public decimal CollectedRevenue { get; set; }
+        public decimal OutstandingAmount { get; set; }
+        public int OverdueCount { get; set; }
+        public decimal OverdueAmount { get; set; }
     }
 }

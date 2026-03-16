@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace SmallProERP.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/sales")]
     public class SalesController : ControllerBase
@@ -19,7 +19,9 @@ namespace SmallProERP.API.Controllers
             _saleService = saleService;
         }
 
-        
+        // ─────────────────────────────────────────────────────────────────────
+        // CLAIM HELPERS
+        // ─────────────────────────────────────────────────────────────────────
         private int GetTenantId()
         {
             var claim = User.FindFirst("TenantId")?.Value;
@@ -32,7 +34,9 @@ namespace SmallProERP.API.Controllers
             return int.TryParse(claim, out int userId) ? userId : null;
         }
 
-    
+        // ─────────────────────────────────────────────────────────────────────
+        // GET /api/sales
+        // ─────────────────────────────────────────────────────────────────────
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SaleDto>>> GetAll(
             [FromQuery] string? search = null)
@@ -44,40 +48,45 @@ namespace SmallProERP.API.Controllers
             return Ok(sales);
         }
 
-       
+        // ─────────────────────────────────────────────────────────────────────
+        // GET /api/sales/statistics
+        // ─────────────────────────────────────────────────────────────────────
         [HttpGet("statistics")]
         public async Task<ActionResult<SaleStatisticsDto>> GetStatistics()
         {
             var tenantId = GetTenantId();
             if (tenantId == 0) return Unauthorized(new { message = "TenantId claim is missing." });
 
-            var statistics = await _saleService.GetStatisticsAsync(tenantId);
-            return Ok(statistics);
+            return Ok(await _saleService.GetStatisticsAsync(tenantId));
         }
 
-    
+        // ─────────────────────────────────────────────────────────────────────
+        // GET /api/sales/unpaid-alerts
+        // ─────────────────────────────────────────────────────────────────────
         [HttpGet("unpaid-alerts")]
         public async Task<ActionResult<IEnumerable<UnpaidInvoiceAlertDto>>> GetUnpaidAlerts()
         {
             var tenantId = GetTenantId();
             if (tenantId == 0) return Unauthorized(new { message = "TenantId claim is missing." });
 
-            var alerts = await _saleService.GetUnpaidAlertsAsync(tenantId);
-            return Ok(alerts);
+            return Ok(await _saleService.GetUnpaidAlertsAsync(tenantId));
         }
 
-      
+        // ─────────────────────────────────────────────────────────────────────
+        // GET /api/sales/customer/{customerId}
+        // ─────────────────────────────────────────────────────────────────────
         [HttpGet("customer/{customerId:int}")]
         public async Task<ActionResult<IEnumerable<SaleDto>>> GetByCustomerId(int customerId)
         {
             var tenantId = GetTenantId();
             if (tenantId == 0) return Unauthorized(new { message = "TenantId claim is missing." });
 
-            var sales = await _saleService.GetByCustomerIdAsync(customerId, tenantId);
-            return Ok(sales);
+            return Ok(await _saleService.GetByCustomerIdAsync(customerId, tenantId));
         }
 
-     
+        // ─────────────────────────────────────────────────────────────────────
+        // GET /api/sales/{id}
+        // ─────────────────────────────────────────────────────────────────────
         [HttpGet("{id:int}")]
         public async Task<ActionResult<SaleDto>> GetById(int id)
         {
@@ -92,7 +101,9 @@ namespace SmallProERP.API.Controllers
             return Ok(sale);
         }
 
-        
+        // ─────────────────────────────────────────────────────────────────────
+        // POST /api/sales
+        // ─────────────────────────────────────────────────────────────────────
         [HttpPost]
         public async Task<ActionResult<SaleDto>> Create([FromBody] CreateSaleDto dto)
         {
@@ -102,16 +113,11 @@ namespace SmallProERP.API.Controllers
             var tenantId = GetTenantId();
             if (tenantId == 0) return Unauthorized(new { message = "TenantId claim is missing." });
 
-            var userId = GetUserId();
-
             try
             {
-                var created = await _saleService.CreateAsync(dto, tenantId, userId);
+                var created = await _saleService.CreateAsync(dto, tenantId, GetUserId());
 
-                return CreatedAtAction(
-                    nameof(GetById),
-                    new { id = created.SaleId },
-                    created);
+                return CreatedAtAction(nameof(GetById), new { id = created.SaleId }, created);
             }
             catch (InvalidOperationException ex)
             {
@@ -119,7 +125,101 @@ namespace SmallProERP.API.Controllers
             }
         }
 
+        // ─────────────────────────────────────────────────────────────────────
+        // POST /api/sales/{id}/items  — add a single item
+        // ─────────────────────────────────────────────────────────────────────
+        /// <summary>
+        /// Adds a new line item to an existing unpaid sale.
+        /// UnitPrice defaults to the product's SellingPrice if not provided.
+        /// Sale totals are recalculated automatically.
+        /// Returns the full updated sale.
+        /// </summary>
+        [HttpPost("{id:int}/items")]
+        public async Task<ActionResult<SaleDto>> AddItem(int id, [FromBody] AddSaleItemDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            var tenantId = GetTenantId();
+            if (tenantId == 0) return Unauthorized(new { message = "TenantId claim is missing." });
+
+            try
+            {
+                var updated = await _saleService.AddItemAsync(id, dto, tenantId);
+                return Ok(updated);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // PUT /api/sales/{id}/items/{itemId}  — update a single item
+        // ─────────────────────────────────────────────────────────────────────
+        /// <summary>
+        /// Updates quantity and/or price of a line item on an unpaid sale.
+        /// UnitPrice keeps its current value if not provided.
+        /// Sale totals are recalculated automatically.
+        /// Returns the full updated sale.
+        /// </summary>
+        [HttpPut("{id:int}/items/{itemId:int}")]
+        public async Task<ActionResult<SaleDto>> UpdateItem(
+            int id, int itemId, [FromBody] UpdateSaleItemInlineDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var tenantId = GetTenantId();
+            if (tenantId == 0) return Unauthorized(new { message = "TenantId claim is missing." });
+
+            try
+            {
+                var updated = await _saleService.UpdateItemAsync(id, itemId, dto, tenantId);
+
+                if (updated is null)
+                    return NotFound(new { message = $"Item with ID {itemId} was not found on sale {id}." });
+
+                return Ok(updated);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // DELETE /api/sales/{id}/items/{itemId}  — remove a single item
+        // ─────────────────────────────────────────────────────────────────────
+        /// <summary>
+        /// Removes a line item from an unpaid sale.
+        /// Sale totals are recalculated automatically.
+        /// Returns the full updated sale.
+        /// </summary>
+        [HttpDelete("{id:int}/items/{itemId:int}")]
+        public async Task<ActionResult<SaleDto>> RemoveItem(int id, int itemId)
+        {
+            var tenantId = GetTenantId();
+            if (tenantId == 0) return Unauthorized(new { message = "TenantId claim is missing." });
+
+            try
+            {
+                var updated = await _saleService.RemoveItemAsync(id, itemId, tenantId);
+
+                if (updated is null)
+                    return NotFound(new { message = $"Item with ID {itemId} was not found on sale {id}." });
+
+                return Ok(updated);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // PUT /api/sales/{id}  — update header fields only
+        // ─────────────────────────────────────────────────────────────────────
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateSaleDto dto)
         {
@@ -144,7 +244,9 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-  
+        // ─────────────────────────────────────────────────────────────────────
+        // DELETE /api/sales/{id}
+        // ─────────────────────────────────────────────────────────────────────
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -159,7 +261,9 @@ namespace SmallProERP.API.Controllers
             return NoContent();
         }
 
-     
+        // ─────────────────────────────────────────────────────────────────────
+        // PATCH /api/sales/{id}/paid
+        // ─────────────────────────────────────────────────────────────────────
         [HttpPatch("{id:int}/paid")]
         public async Task<IActionResult> MarkPaid(int id, [FromBody] MarkSalePaidDto dto)
         {

@@ -34,10 +34,10 @@ builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ICustomerInteractionService, CustomerInteractionService>();
 builder.Services.AddScoped<IQuotationService, QuotationService>();
-builder.Services.AddScoped<IQuotationItemService,QuotationItemService>();
+//builder.Services.AddScoped<IQuotationItemService,QuotationItemService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
-builder.Services.AddScoped<SaleItemService>();                  
-builder.Services.AddScoped<ISaleItemService, SaleItemService>();
+//builder.Services.AddScoped<SaleItemService>();                     
+//builder.Services.AddScoped<ISaleItemService, SaleItemService>();
 
 builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddScoped<IAuthService, AuthService>();

@@ -17,8 +17,8 @@ namespace SmallProERP.Models.DTOs.SaleDto
         public decimal TotalAmount { get; set; }
         public DateTime InvoiceDate { get; set; }
         public DateTime? DueDate { get; set; }
-        public int DaysSinceInvoice { get; set; }    // how many days since invoice was created
-        public bool IsOverdue { get; set; }          // true if past DueDate
-        public int? DaysOverdue { get; set; }        // how many days past DueDate (null if not overdue)
+        public int DaysSinceInvoice { get; set; }
+        public bool IsOverdue { get; set; }
+        public int? DaysOverdue { get; set; }
     }
 }

@@ -12,7 +12,6 @@ namespace SmallProERP.Models.DTOs.SaleDto
         [Required(ErrorMessage = "IsPaid is required.")]
         public bool IsPaid { get; set; }
 
-        // Optional — if not provided, defaults to UtcNow when IsPaid = true
         public DateTime? PaidDate { get; set; }
 
         [MaxLength(50, ErrorMessage = "Payment method must not exceed 50 characters.")]
