@@ -20,13 +20,9 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1.")]
         public int Quantity { get; set; }
 
-        // Optional price override — if not provided, uses product SellingPrice
         
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // READ — line item returned inside QuotationDto
-    // ─────────────────────────────────────────────────────────────────────────
     public class QuotationItemDto
     {
         public int QuotationItemId { get; set; }
@@ -38,9 +34,7 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         public decimal LineTotal { get; set; }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // READ — full quotation response including all items
-    // ─────────────────────────────────────────────────────────────────────────
+  
     public class QuotationDto
     {
         public int QuotationId { get; set; }
@@ -64,9 +58,7 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         public int ItemCount { get; set; }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // SUMMARY — lightweight list item (no items array)
-    // ─────────────────────────────────────────────────────────────────────────
+    
     public class QuotationSummaryDto
     {
         public int QuotationId { get; set; }
@@ -83,9 +75,7 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         public DateTime CreatedAt { get; set; }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // CREATE — one request with items array
-    // ─────────────────────────────────────────────────────────────────────────
+
     public class CreateQuotationDto
     {
         [Required(ErrorMessage = "Quotation number is required.")]
@@ -111,11 +101,7 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         public List<CreateQuotationItemInlineDto> Items { get; set; } = new();
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // UPDATE — header fields only
-    // QuotationNumber excluded — cannot change after creation.
-    // Status excluded — use PATCH /status.
-    // ─────────────────────────────────────────────────────────────────────────
+  
     public class UpdateQuotationDto
     {
         [Required(ErrorMessage = "CustomerId is required.")]
@@ -132,9 +118,7 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         public DateTime? ValidUntil { get; set; }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // STATUS CHANGE — PATCH /api/quotations/{id}/status
-    // ─────────────────────────────────────────────────────────────────────────
+
     public class ChangeQuotationStatusDto
     {
         [Required(ErrorMessage = "Status is required.")]
@@ -142,9 +126,6 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         public int Status { get; set; }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // ADD ITEM — POST /api/quotations/{id}/items
-    // ─────────────────────────────────────────────────────────────────────────
     public class AddQuotationItemDto
     {
         [Required(ErrorMessage = "ProductId is required.")]
@@ -155,13 +136,10 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1.")]
         public int Quantity { get; set; }
 
-        // Optional — defaults to product SellingPrice if not provided
        
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // UPDATE ITEM — PUT /api/quotations/{id}/items/{itemId}
-    // ─────────────────────────────────────────────────────────────────────────
+  
     public class UpdateQuotationItemInlineDto
     {
         [Required(ErrorMessage = "Quantity is required.")]
@@ -172,9 +150,7 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         public decimal? UnitPrice { get; set; }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // STATISTICS
-    // ─────────────────────────────────────────────────────────────────────────
+ 
     public class QuotationStatisticsDto
     {
         public int TotalQuotations { get; set; }
@@ -187,9 +163,7 @@ namespace SmallProERP.Models.DTOs.QuotationDto
         public decimal PendingValue { get; set; }
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // CONVERT TO SALE
-    // ─────────────────────────────────────────────────────────────────────────
+
     public class ConvertQuotationToSaleDto
     {
         public DateTime? InvoiceDate { get; set; }

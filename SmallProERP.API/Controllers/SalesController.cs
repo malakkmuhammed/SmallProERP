@@ -19,9 +19,7 @@ namespace SmallProERP.API.Controllers
             _saleService = saleService;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // CLAIM HELPERS
-        // ─────────────────────────────────────────────────────────────────────
+    
         private int GetTenantId()
         {
             var claim = User.FindFirst("TenantId")?.Value;
@@ -34,9 +32,7 @@ namespace SmallProERP.API.Controllers
             return int.TryParse(claim, out int userId) ? userId : null;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/sales
-        // ─────────────────────────────────────────────────────────────────────
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SaleDto>>> GetAll(
             [FromQuery] string? search = null)
@@ -48,9 +44,6 @@ namespace SmallProERP.API.Controllers
             return Ok(sales);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/sales/statistics
-        // ─────────────────────────────────────────────────────────────────────
         [HttpGet("statistics")]
         public async Task<ActionResult<SaleStatisticsDto>> GetStatistics()
         {
@@ -60,9 +53,7 @@ namespace SmallProERP.API.Controllers
             return Ok(await _saleService.GetStatisticsAsync(tenantId));
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/sales/unpaid-alerts
-        // ─────────────────────────────────────────────────────────────────────
+ 
         [HttpGet("unpaid-alerts")]
         public async Task<ActionResult<IEnumerable<UnpaidInvoiceAlertDto>>> GetUnpaidAlerts()
         {
@@ -72,9 +63,7 @@ namespace SmallProERP.API.Controllers
             return Ok(await _saleService.GetUnpaidAlertsAsync(tenantId));
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/sales/customer/{customerId}
-        // ─────────────────────────────────────────────────────────────────────
+   
         [HttpGet("customer/{customerId:int}")]
         public async Task<ActionResult<IEnumerable<SaleDto>>> GetByCustomerId(int customerId)
         {
@@ -84,9 +73,7 @@ namespace SmallProERP.API.Controllers
             return Ok(await _saleService.GetByCustomerIdAsync(customerId, tenantId));
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/sales/{id}
-        // ─────────────────────────────────────────────────────────────────────
+        
         [HttpGet("{id:int}")]
         public async Task<ActionResult<SaleDto>> GetById(int id)
         {
@@ -101,9 +88,7 @@ namespace SmallProERP.API.Controllers
             return Ok(sale);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // POST /api/sales
-        // ─────────────────────────────────────────────────────────────────────
+      
         [HttpPost]
         public async Task<ActionResult<SaleDto>> Create([FromBody] CreateSaleDto dto)
         {
@@ -125,15 +110,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // POST /api/sales/{id}/items  — add a single item
-        // ─────────────────────────────────────────────────────────────────────
-        /// <summary>
-        /// Adds a new line item to an existing unpaid sale.
-        /// UnitPrice defaults to the product's SellingPrice if not provided.
-        /// Sale totals are recalculated automatically.
-        /// Returns the full updated sale.
-        /// </summary>
+    
         [HttpPost("{id:int}/items")]
         public async Task<ActionResult<SaleDto>> AddItem(int id, [FromBody] AddSaleItemDto dto)
         {
@@ -154,15 +131,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PUT /api/sales/{id}/items/{itemId}  — update a single item
-        // ─────────────────────────────────────────────────────────────────────
-        /// <summary>
-        /// Updates quantity and/or price of a line item on an unpaid sale.
-        /// UnitPrice keeps its current value if not provided.
-        /// Sale totals are recalculated automatically.
-        /// Returns the full updated sale.
-        /// </summary>
+    
         [HttpPut("{id:int}/items/{itemId:int}")]
         public async Task<ActionResult<SaleDto>> UpdateItem(
             int id, int itemId, [FromBody] UpdateSaleItemInlineDto dto)
@@ -188,14 +157,6 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // DELETE /api/sales/{id}/items/{itemId}  — remove a single item
-        // ─────────────────────────────────────────────────────────────────────
-        /// <summary>
-        /// Removes a line item from an unpaid sale.
-        /// Sale totals are recalculated automatically.
-        /// Returns the full updated sale.
-        /// </summary>
         [HttpDelete("{id:int}/items/{itemId:int}")]
         public async Task<ActionResult<SaleDto>> RemoveItem(int id, int itemId)
         {
@@ -217,9 +178,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PUT /api/sales/{id}  — update header fields only
-        // ─────────────────────────────────────────────────────────────────────
+        
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateSaleDto dto)
         {
@@ -244,9 +203,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // DELETE /api/sales/{id}
-        // ─────────────────────────────────────────────────────────────────────
+    
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -261,9 +218,7 @@ namespace SmallProERP.API.Controllers
             return NoContent();
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PATCH /api/sales/{id}/paid
-        // ─────────────────────────────────────────────────────────────────────
+   
         [HttpPatch("{id:int}/paid")]
         public async Task<IActionResult> MarkPaid(int id, [FromBody] MarkSalePaidDto dto)
         {

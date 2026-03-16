@@ -20,9 +20,7 @@ namespace SmallProERP.API.Controllers
             _quotationService = quotationService;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // CLAIM HELPERS
-        // ─────────────────────────────────────────────────────────────────────
+       
         private int GetTenantId()
         {
             var claim = User.FindFirst("TenantId")?.Value;
@@ -35,10 +33,7 @@ namespace SmallProERP.API.Controllers
             return int.TryParse(claim, out int userId) ? userId : null;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/quotations
-        // GET /api/quotations?search=ahmed
-        // ─────────────────────────────────────────────────────────────────────
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<QuotationSummaryDto>>> GetAll(
             [FromQuery] string? search = null)
@@ -49,9 +44,6 @@ namespace SmallProERP.API.Controllers
             return Ok(await _quotationService.GetAllAsync(tenantId, search));
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/quotations/statistics
-        // ─────────────────────────────────────────────────────────────────────
         [HttpGet("statistics")]
         public async Task<ActionResult<QuotationStatisticsDto>> GetStatistics()
         {
@@ -61,9 +53,7 @@ namespace SmallProERP.API.Controllers
             return Ok(await _quotationService.GetStatisticsAsync(tenantId));
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/quotations/customer/{customerId}
-        // ─────────────────────────────────────────────────────────────────────
+
         [HttpGet("customer/{customerId:int}")]
         public async Task<ActionResult<IEnumerable<QuotationSummaryDto>>> GetByCustomerId(
             int customerId)
@@ -74,9 +64,7 @@ namespace SmallProERP.API.Controllers
             return Ok(await _quotationService.GetByCustomerIdAsync(customerId, tenantId));
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET /api/quotations/{id}
-        // ─────────────────────────────────────────────────────────────────────
+        
         [HttpGet("{id:int}")]
         public async Task<ActionResult<QuotationDto>> GetById(int id)
         {
@@ -91,14 +79,7 @@ namespace SmallProERP.API.Controllers
             return Ok(quotation);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // POST /api/quotations
-        // ─────────────────────────────────────────────────────────────────────
-        /// <summary>
-        /// Creates a new quotation with all items in one request.
-        /// UnitPrice defaults to product SellingPrice if not provided per item.
-        /// Status defaults to Draft.
-        /// </summary>
+     
         [HttpPost]
         public async Task<ActionResult<QuotationDto>> Create([FromBody] CreateQuotationDto dto)
         {
@@ -120,15 +101,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // POST /api/quotations/{id}/items  — add a single item
-        // ─────────────────────────────────────────────────────────────────────
-        /// <summary>
-        /// Adds a new line item to a Draft or Sent quotation.
-        /// UnitPrice defaults to product SellingPrice if not provided.
-        /// Blocked on Accepted or Rejected quotations.
-        /// Returns the full updated quotation.
-        /// </summary>
+     
         [HttpPost("{id:int}/items")]
         public async Task<ActionResult<QuotationDto>> AddItem(
             int id, [FromBody] AddQuotationItemDto dto)
@@ -150,15 +123,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PUT /api/quotations/{id}/items/{itemId}  — update a single item
-        // ─────────────────────────────────────────────────────────────────────
-        /// <summary>
-        /// Updates quantity and/or price of a line item.
-        /// UnitPrice keeps current value if not provided.
-        /// Blocked on Accepted or Rejected quotations.
-        /// Returns the full updated quotation.
-        /// </summary>
+       
         [HttpPut("{id:int}/items/{itemId:int}")]
         public async Task<ActionResult<QuotationDto>> UpdateItem(
             int id, int itemId, [FromBody] UpdateQuotationItemInlineDto dto)
@@ -184,14 +149,6 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // DELETE /api/quotations/{id}/items/{itemId}  — remove a single item
-        // ─────────────────────────────────────────────────────────────────────
-        /// <summary>
-        /// Removes a line item from a Draft or Sent quotation.
-        /// Blocked on Accepted or Rejected quotations.
-        /// Returns the full updated quotation.
-        /// </summary>
         [HttpDelete("{id:int}/items/{itemId:int}")]
         public async Task<ActionResult<QuotationDto>> RemoveItem(int id, int itemId)
         {
@@ -213,10 +170,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // POST /api/quotations/{id}/convert
-        // ─────────────────────────────────────────────────────────────────────
-        /// <summary>Converts an Accepted quotation into a Sale. Copies all line items.</summary>
+       
         [HttpPost("{id:int}/convert")]
         public async Task<ActionResult<SaleDto>> ConvertToSale(
             int id, [FromBody] ConvertQuotationToSaleDto dto)
@@ -235,9 +189,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PUT /api/quotations/{id}  — header fields only
-        // ─────────────────────────────────────────────────────────────────────
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateQuotationDto dto)
         {
@@ -262,9 +214,7 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // DELETE /api/quotations/{id}
-        // ─────────────────────────────────────────────────────────────────────
+      
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -279,9 +229,7 @@ namespace SmallProERP.API.Controllers
             return NoContent();
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PATCH /api/quotations/{id}/status
-        // ─────────────────────────────────────────────────────────────────────
+
         [HttpPatch("{id:int}/status")]
         public async Task<IActionResult> ChangeStatus(
             int id, [FromBody] ChangeQuotationStatusDto dto)

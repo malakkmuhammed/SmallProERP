@@ -23,9 +23,7 @@ namespace SmallProERP.BLL.Services.Implementations
             _context = context;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET ALL
-        // ─────────────────────────────────────────────────────────────────────
+       
         public async Task<IEnumerable<QuotationSummaryDto>> GetAllAsync(
             int tenantId, string? search = null)
         {
@@ -52,18 +50,14 @@ namespace SmallProERP.BLL.Services.Implementations
             return quotations.Select(MapToSummaryDto);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET BY ID — full response with items
-        // ─────────────────────────────────────────────────────────────────────
+
         public async Task<QuotationDto?> GetByIdAsync(int id, int tenantId)
         {
             var quotation = await FindByIdAsync(id, tenantId);
             return quotation is null ? null : MapToDto(quotation);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET BY CUSTOMER ID
-        // ─────────────────────────────────────────────────────────────────────
+
         public async Task<IEnumerable<QuotationSummaryDto>> GetByCustomerIdAsync(
             int customerId, int tenantId)
         {
@@ -78,9 +72,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return quotations.Select(MapToSummaryDto);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET STATISTICS
-        // ─────────────────────────────────────────────────────────────────────
+     
         public async Task<QuotationStatisticsDto> GetStatisticsAsync(int tenantId)
         {
             var quotations = await _context.Quotations
@@ -103,9 +95,7 @@ namespace SmallProERP.BLL.Services.Implementations
             };
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // CREATE — quotation + items in one operation
-        // ─────────────────────────────────────────────────────────────────────
+   
         public async Task<QuotationDto> CreateAsync(
             CreateQuotationDto dto, int tenantId, int? userId)
         {
@@ -188,9 +178,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapToDto(created!);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // UPDATE HEADER
-        // ─────────────────────────────────────────────────────────────────────
+       
         public async Task<bool> UpdateAsync(int id, UpdateQuotationDto dto, int tenantId)
         {
             var quotation = await FindByIdAsync(id, tenantId);
@@ -219,9 +207,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return true;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // DELETE
-        // ─────────────────────────────────────────────────────────────────────
+        
         public async Task<bool> DeleteAsync(int id, int tenantId)
         {
             var quotation = await FindByIdAsync(id, tenantId);
@@ -234,9 +220,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return true;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // CHANGE STATUS
-        // ─────────────────────────────────────────────────────────────────────
+      
         public async Task<bool> ChangeStatusAsync(int id, int status, int tenantId)
         {
             if (!Enum.IsDefined(typeof(QuotationStatus), status))
@@ -254,9 +238,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return true;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // CONVERT TO SALE
-        // ─────────────────────────────────────────────────────────────────────
+      
         public async Task<SaleDto> ConvertToSaleAsync(
             int quotationId, ConvertQuotationToSaleDto dto, int tenantId, int? userId)
         {
@@ -314,9 +296,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapSaleToDto(sale, quotation);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // ADD ITEM
-        // ─────────────────────────────────────────────────────────────────────
+       
         public async Task<QuotationDto> AddItemAsync(
             int quotationId, AddQuotationItemDto dto, int tenantId)
         {
@@ -371,9 +351,6 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapToDto(updated!);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // UPDATE ITEM
-        // ─────────────────────────────────────────────────────────────────────
         public async Task<QuotationDto?> UpdateItemAsync(
             int quotationId, int itemId, UpdateQuotationItemInlineDto dto, int tenantId)
         {
@@ -422,9 +399,6 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapToDto(updated!);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // REMOVE ITEM
-        // ─────────────────────────────────────────────────────────────────────
         public async Task<QuotationDto?> RemoveItemAsync(
             int quotationId, int itemId, int tenantId)
         {
@@ -455,9 +429,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapToDto(updated!);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PRIVATE — recalculate totals from current items
-        // ─────────────────────────────────────────────────────────────────────
+     
         private static void RecalculateTotals(
             Quotation quotation, QuotationItem? pendingItem = null)
         {
@@ -470,9 +442,7 @@ namespace SmallProERP.BLL.Services.Implementations
             quotation.TotalAmount = subtotal + quotation.TaxAmount;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PRIVATE HELPERS
-        // ─────────────────────────────────────────────────────────────────────
+     
         private async Task<Quotation?> FindByIdAsync(int id, int tenantId)
         {
             return await _context.Quotations

@@ -21,9 +21,6 @@ namespace SmallProERP.BLL.Services.Implementations
             _context = context;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET ALL
-        // ─────────────────────────────────────────────────────────────────────
         public async Task<IEnumerable<SaleDto>> GetAllAsync(
             int tenantId, string? search = null)
         {
@@ -51,18 +48,14 @@ namespace SmallProERP.BLL.Services.Implementations
             return sales.Select(MapToDto);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET BY ID
-        // ─────────────────────────────────────────────────────────────────────
+
         public async Task<SaleDto?> GetByIdAsync(int id, int tenantId)
         {
             var sale = await FindByIdAsync(id, tenantId);
             return sale is null ? null : MapToDto(sale);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET BY CUSTOMER ID
-        // ─────────────────────────────────────────────────────────────────────
+    
         public async Task<IEnumerable<SaleDto>> GetByCustomerIdAsync(
             int customerId, int tenantId)
         {
@@ -78,9 +71,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return sales.Select(MapToDto);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET STATISTICS
-        // ─────────────────────────────────────────────────────────────────────
+   
         public async Task<SaleStatisticsDto> GetStatisticsAsync(int tenantId)
         {
             var now = DateTime.UtcNow;
@@ -107,9 +98,6 @@ namespace SmallProERP.BLL.Services.Implementations
             };
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // GET UNPAID ALERTS
-        // ─────────────────────────────────────────────────────────────────────
         public async Task<IEnumerable<UnpaidInvoiceAlertDto>> GetUnpaidAlertsAsync(int tenantId)
         {
             var now = DateTime.UtcNow;
@@ -149,9 +137,7 @@ namespace SmallProERP.BLL.Services.Implementations
             });
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // CREATE — sale + items in one operation
-        // ─────────────────────────────────────────────────────────────────────
+      
         public async Task<SaleDto> CreateAsync(
             CreateSaleDto dto, int tenantId, int? userId)
         {
@@ -250,9 +236,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapToDto(created!);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // UPDATE HEADER
-        // ─────────────────────────────────────────────────────────────────────
+     
         public async Task<bool> UpdateAsync(int id, UpdateSaleDto dto, int tenantId)
         {
             var sale = await FindByIdAsync(id, tenantId);
@@ -284,9 +268,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return true;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // DELETE
-        // ─────────────────────────────────────────────────────────────────────
+     
         public async Task<bool> DeleteAsync(int id, int tenantId)
         {
             var sale = await FindByIdAsync(id, tenantId);
@@ -299,9 +281,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return true;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // MARK PAID
-        // ─────────────────────────────────────────────────────────────────────
+        
         public async Task<bool> MarkPaidAsync(int id, MarkSalePaidDto dto, int tenantId)
         {
             var sale = await FindByIdAsync(id, tenantId);
@@ -332,9 +312,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return true;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // ADD ITEM
-        // ─────────────────────────────────────────────────────────────────────
+  
         public async Task<SaleDto> AddItemAsync(int saleId, AddSaleItemDto dto, int tenantId)
         {
             var sale = await FindByIdAsync(saleId, tenantId);
@@ -387,9 +365,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapToDto(updated!);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // UPDATE ITEM
-        // ─────────────────────────────────────────────────────────────────────
+        
         public async Task<SaleDto?> UpdateItemAsync(
             int saleId, int itemId, UpdateSaleItemInlineDto dto, int tenantId)
         {
@@ -439,9 +415,6 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapToDto(updated!);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // REMOVE ITEM
-        // ─────────────────────────────────────────────────────────────────────
         public async Task<SaleDto?> RemoveItemAsync(int saleId, int itemId, int tenantId)
         {
             var sale = await FindByIdAsync(saleId, tenantId);
@@ -472,14 +445,7 @@ namespace SmallProERP.BLL.Services.Implementations
             return MapToDto(updated!);
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PRIVATE — recalculate sale totals from current items
-        // ─────────────────────────────────────────────────────────────────────
-
-        /// <summary>
-        /// Recalculates Subtotal and TotalAmount from current in-memory items.
-        /// pendingItem — a new item not yet in the SaleItems collection.
-        /// </summary>
+    
         private static void RecalculateTotals(Sale sale, SaleItem? pendingItem = null)
         {
             decimal subtotal = sale.SaleItems?.Sum(si => si.LineTotal) ?? 0;
@@ -491,9 +457,7 @@ namespace SmallProERP.BLL.Services.Implementations
             sale.TotalAmount = subtotal + sale.TaxAmount;
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PRIVATE — stock deduction on payment
-        // ─────────────────────────────────────────────────────────────────────
+      
         private async Task DeductStockAsync(Sale sale, int tenantId)
         {
             var items = await _context.SaleItems
@@ -525,9 +489,7 @@ namespace SmallProERP.BLL.Services.Implementations
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
-        // PRIVATE HELPERS
-        // ─────────────────────────────────────────────────────────────────────
+    
         private async Task<Sale?> FindByIdAsync(int id, int tenantId)
         {
             return await _context.Sales

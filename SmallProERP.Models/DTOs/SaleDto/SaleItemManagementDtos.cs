@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace SmallProERP.Models.DTOs.SaleDto
 {
-    // ─────────────────────────────────────────────────────────────────────────
-    // ADD ITEM — POST /api/sales/{id}/items
-    // ─────────────────────────────────────────────────────────────────────────
+  
     public class AddSaleItemDto
     {
         [Required(ErrorMessage = "ProductId is required.")]
@@ -24,9 +22,7 @@ namespace SmallProERP.Models.DTOs.SaleDto
         
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // UPDATE ITEM — PUT /api/sales/{saleId}/items/{itemId}
-    // ─────────────────────────────────────────────────────────────────────────
+   
     public class UpdateSaleItemInlineDto
     {
         [Required(ErrorMessage = "Quantity is required.")]

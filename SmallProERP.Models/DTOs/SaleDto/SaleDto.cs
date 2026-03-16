@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmallProERP.Models.DTOs.SaleDto
 {
-    // ─────────────────────────────────────────────────────────────────────────
+    
     public class SaleDto
     {
         public int SaleId { get; set; }
