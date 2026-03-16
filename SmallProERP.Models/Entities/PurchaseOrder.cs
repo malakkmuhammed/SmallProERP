@@ -23,6 +23,8 @@ namespace SmallProERP.Models.Entities
 
         public DateTime? ReceivedDate { get; set; }
 
+        public string? Notes { get; set; }
+
         public int TenantId { get; set; }
 
         public DateTime CreatedAt { get; set; }

@@ -8,7 +8,7 @@ namespace SmallProERP.API.Controllers
 {
     [ApiController]
     [Route("api/suppliers")]
-    //[Authorize]
+    [Authorize]
     public class SuppliersController : ControllerBase
     {
         private readonly ISupplierService _supplierService;

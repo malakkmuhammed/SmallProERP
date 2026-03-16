@@ -10,7 +10,7 @@ namespace SmallProERP.API.Controllers
 {
     [ApiController]
     [Route("api/purchase-orders")]
-    //[Authorize]
+    [Authorize]
     public class PurchaseOrdersController : ControllerBase
     {
         private readonly IPurchaseOrderService _purchaseOrderService;
@@ -196,6 +196,26 @@ namespace SmallProERP.API.Controllers
                     return NotFound(new { message = $"Purchase order with ID {id} not found" });
 
                 return Ok(new { message = "Purchase order received successfully. All product quantities have been updated." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+        // GET /api/purchase-orders/{id}/document
+        [HttpGet("{id:int}/document")]
+        //[Authorize(Roles = "Admin,Manager")]
+        public async Task<ActionResult<PurchaseOrderDocumentDto>> GetDocument(int id)
+        {
+            try
+            {
+                var tenantId = GetTenantId();
+                var document = await _purchaseOrderService.GetDocumentAsync(id, tenantId);
+
+                if (document == null)
+                    return NotFound(new { message = $"Purchase order with ID {id} not found" });
+
+                return Ok(document);
             }
             catch (InvalidOperationException ex)
             {

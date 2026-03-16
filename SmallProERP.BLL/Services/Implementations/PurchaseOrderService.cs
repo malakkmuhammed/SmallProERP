@@ -78,6 +78,7 @@ namespace SmallProERP.BLL.Services.Implementations
                 OrderDate = DateTime.UtcNow,
                 TenantId = tenantId,
                 CreatedAt = DateTime.UtcNow,
+                Notes = dto.Notes,
                 PurchaseOrderItems = new List<PurchaseOrderItem>()
             };
 
@@ -332,6 +333,61 @@ namespace SmallProERP.BLL.Services.Implementations
         }
 
         #endregion
+        public async Task<PurchaseOrderDocumentDto?> GetDocumentAsync(int id, int tenantId)
+        {
+            var purchaseOrder = await _context.PurchaseOrders
+                .Include(po => po.Supplier)
+                .Include(po => po.PurchaseOrderItems!)
+                    .ThenInclude(poi => poi.Product)
+                .Include(po => po.Tenant)
+                .FirstOrDefaultAsync(po => po.PurchaseOrderId == id && po.TenantId == tenantId);
+
+            if (purchaseOrder == null)
+                return null;
+
+            if (purchaseOrder.Status != POStatus.Draft)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot generate document for purchase order with status '{purchaseOrder.Status}'. Only Draft purchase orders can be converted to documents.");
+            }
+
+            var document = new PurchaseOrderDocumentDto
+            {
+                PONumber = purchaseOrder.PONumber,
+                OrderDate = purchaseOrder.OrderDate,
+                ExpectedDeliveryDate = purchaseOrder.OrderDate.AddDays(14), 
+
+                SupplierName = purchaseOrder.Supplier?.Name ?? "",
+                SupplierEmail = purchaseOrder.Supplier?.Email,
+                SupplierPhone = purchaseOrder.Supplier?.Phone,
+                SupplierAddress = purchaseOrder.Supplier?.Address,
+
+                
+                CompanyName = purchaseOrder.Tenant?.CompanyName ?? "",
+
+                Items = purchaseOrder.PurchaseOrderItems?
+                    .Select((poi, index) => new PODocumentItemDto
+                    {
+                        ItemNumber = index + 1, 
+                        ProductCode = poi.Product?.ProductCode ?? "",
+                        ProductName = poi.Product?.Name ?? "",
+                        ProductDescription = poi.Product?.Description,
+                        Quantity = poi.Quantity,
+                        UnitPrice = poi.UnitPrice,
+                        LineTotal = poi.LineTotal
+                    }).ToList() ?? new List<PODocumentItemDto>(),
+
+               
+                TotalAmount = purchaseOrder.TotalAmount,
+                TotalItems = purchaseOrder.PurchaseOrderItems?.Count ?? 0,
+                TotalQuantity = purchaseOrder.PurchaseOrderItems?.Sum(poi => poi.Quantity) ?? 0,
+                Notes= purchaseOrder.Notes
+
+
+            };
+
+            return document;
+        }
 
         #region Private Helpers
 
@@ -369,7 +425,7 @@ namespace SmallProERP.BLL.Services.Implementations
                 OrderDate = purchaseOrder.OrderDate,
                 ReceivedDate = purchaseOrder.ReceivedDate,
                 CreatedAt = purchaseOrder.CreatedAt,
-                Notes = null,
+                Notes = purchaseOrder.Notes,
                 Items = purchaseOrder.PurchaseOrderItems?.Select(poi => new PurchaseOrderItemDto
                 {
                     PurchaseOrderItemId = poi.PurchaseOrderItemId,
@@ -387,5 +443,6 @@ namespace SmallProERP.BLL.Services.Implementations
         }
 
         #endregion
+        
     }
 }

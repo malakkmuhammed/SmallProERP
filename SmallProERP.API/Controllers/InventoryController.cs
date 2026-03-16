@@ -10,7 +10,7 @@ namespace SmallProERP.API.Controllers
 {
     [ApiController]
     [Route("api/inventory")]
-    //[Authorize]
+    [Authorize]
     public class InventoryController : ControllerBase
     {
         private readonly IInventoryService _inventoryService;
