@@ -20,5 +20,7 @@ namespace SmallProERP.Models.Entities
 
         public Tenant? Tenant { get; set; }
         public User? Creator { get; set; }
+
+        
     }
 }

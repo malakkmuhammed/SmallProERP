@@ -93,7 +93,8 @@ namespace SmallProERP.BLL.Services.Implementations
         public async Task<(bool Success, string Message, int? UserId, string Username)> RegisterUserAsync(
             RegisterUserDto dto,
             int adminTenantId,
-            int adminUserId)
+            int adminUserId,
+            UserRole userRole)
         {
             
             var existingUser = await _context.Users
@@ -122,7 +123,7 @@ namespace SmallProERP.BLL.Services.Implementations
                 Email = dto.Email,
                 FullName = dto.FullName,
                 PhoneNumber = dto.PhoneNumber,
-                Role = dto.Role,
+                Role = userRole,
                 TenantId = adminTenantId,  
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow,
@@ -136,6 +137,7 @@ namespace SmallProERP.BLL.Services.Implementations
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                 return (false, $"Failed to create user: {errors}", null, string.Empty);
             }
+            await _userManager.AddToRoleAsync(newUser, userRole.ToString());
 
             return (true, "User registered successfully", newUser.Id, newUser.UserName);
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmallProERP.Models.DTOs.DashboardDtos
 {
+    //inventory
     public class InventoryOverviewDto
     {
         public int TotalProducts { get; set; }
@@ -13,7 +14,7 @@ namespace SmallProERP.Models.DTOs.DashboardDtos
         public int LowStockCount { get; set; }
         public int OutOfStockCount { get; set; }
     }
-
+    //purchase
     public class PurchaseOrdersOverviewDto
     {
         public int TotalPurchaseOrders { get; set; }
@@ -23,7 +24,7 @@ namespace SmallProERP.Models.DTOs.DashboardDtos
         public decimal TotalAmountAllTime { get; set; }
         public decimal PendingPOsValue { get; set; }
     }
-
+    //purchase
     public class SuppliersOverviewDto
     {
         public int TotalSuppliers { get; set; }
@@ -33,7 +34,7 @@ namespace SmallProERP.Models.DTOs.DashboardDtos
     }
 
     
-
+    //inventory
     public class LowStockAlertDto
     {
         public int ProductId { get; set; }
@@ -47,7 +48,7 @@ namespace SmallProERP.Models.DTOs.DashboardDtos
     }
 
    
-
+    //inventory
     public class RecentActivityDto
     {
         public int MovementId { get; set; }
@@ -61,7 +62,7 @@ namespace SmallProERP.Models.DTOs.DashboardDtos
     }
 
    
-
+    //inventory
     public class InventoryByCategoryDto
     {
         public List<CategoryValueDto> Categories { get; set; } = new();
@@ -74,14 +75,14 @@ namespace SmallProERP.Models.DTOs.DashboardDtos
         public int ProductCount { get; set; }
         public double Percentage { get; set; }
     }
-
+    //purchase
     public class PurchaseTrendsDto
     {
         public List<string> Months { get; set; } = new();
         public List<decimal> Amounts { get; set; } = new();
         public List<int> OrderCounts { get; set; } = new();
     }
-
+    //purchase
     public class TopSupplierDto
     {
         public int SupplierId { get; set; }
@@ -90,7 +91,7 @@ namespace SmallProERP.Models.DTOs.DashboardDtos
         public int OrderCount { get; set; }
         public int ProductCount { get; set; }
     }
-
+    //inventory
     public class TopProductDto
     {
         public int ProductId { get; set; }
@@ -101,7 +102,7 @@ namespace SmallProERP.Models.DTOs.DashboardDtos
         public decimal TotalValue { get; set; }
         public string? SupplierName { get; set; }
     }
-
+    //inventory
     public class MovementsByTypeDto
     {
         public List<MovementTypeCountDto> Types { get; set; } = new();

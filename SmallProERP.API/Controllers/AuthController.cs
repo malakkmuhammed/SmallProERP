@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmallProERP.BLL.Services.Interfaces;
 using SmallProERP.Models.DTOs.Auth;
+using SmallProERP.Models.Enums;
 
 namespace SmallProERP.API.Controllers
 {
@@ -47,6 +48,34 @@ namespace SmallProERP.API.Controllers
             {
                 return BadRequest(ModelState);
             }
+            if (int.TryParse(dto.Role, out _))
+            {
+                return BadRequest(new
+                {
+                    message = "Role must be a text value ( Manager, InventoryManager, Salesperson ) not a number"
+                });
+            }
+
+            
+            if (!Enum.TryParse<UserRole>(dto.Role, true, out var userRole))
+            {
+                var validRoles = string.Join(", ", Enum.GetNames(typeof(UserRole)));
+                return BadRequest(new
+                {
+                    message = $"Invalid role '{dto.Role}'. Valid roles are: {validRoles}"
+                });
+            }
+
+            
+            if (!Enum.IsDefined(typeof(UserRole), userRole))
+            {
+                var validRoles = string.Join(", ", Enum.GetNames(typeof(UserRole)));
+                return BadRequest(new
+                {
+                    message = $"Invalid role value. Valid roles are: {validRoles}"
+                });
+            }
+
 
             var adminTenantIdClaim = User.FindFirst("TenantId");
             if (adminTenantIdClaim == null)
@@ -64,7 +93,7 @@ namespace SmallProERP.API.Controllers
 
             var adminUserId = int.Parse(adminUserIdClaim.Value);
 
-            var result = await _authService.RegisterUserAsync(dto, adminTenantId, adminUserId);
+            var result = await _authService.RegisterUserAsync(dto, adminTenantId, adminUserId, userRole);
 
             if (!result.Success)
             {
@@ -76,7 +105,8 @@ namespace SmallProERP.API.Controllers
                 message = result.Message,
                 userId = result.UserId,
                 username = result.Username,
-                tenantId = adminTenantId
+                tenantId = adminTenantId,
+                role = userRole.ToString()
             });
         }
 

@@ -52,14 +52,40 @@ namespace SmallProERP.API.Controllers
             return Ok(movements);
         }
 
-        [HttpGet("movements/type/{type:int}")]
-        public async Task<ActionResult<IEnumerable<InventoryMovementDto>>> GetMovementsByType(int type)
+        [HttpGet("movements/type/{type}")]
+        public async Task<ActionResult<IEnumerable<InventoryMovementDto>>> GetMovementsByType(string type)
         {
-            if (!Enum.IsDefined(typeof(MovementType), type))
-                return BadRequest(new { message = "Invalid movement type" });
+            
+            if (int.TryParse(type, out _))
+            {
+                return BadRequest(new
+                {
+                    message = "Movement type must be text (Purchase, Sale, Adjustment), not a number"
+                });
+            }
+
+          
+            if (!Enum.TryParse<MovementType>(type, true, out var movementType))
+            {
+                var validTypes = string.Join(", ", Enum.GetNames(typeof(MovementType)));
+                return BadRequest(new
+                {
+                    message = $"Invalid movement type '{type}'. Valid types are: {validTypes}"
+                });
+            }
+
+            
+            if (!Enum.IsDefined(typeof(MovementType), movementType))
+            {
+                var validTypes = string.Join(", ", Enum.GetNames(typeof(MovementType)));
+                return BadRequest(new
+                {
+                    message = $"Invalid movement type. Valid types are: {validTypes}"
+                });
+            }
 
             var tenantId = GetTenantId();
-            var movements = await _inventoryService.GetMovementsByTypeAsync((MovementType)type, tenantId);
+            var movements = await _inventoryService.GetMovementsByTypeAsync(movementType, tenantId);
             return Ok(movements);
         }
 

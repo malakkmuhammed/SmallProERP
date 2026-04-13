@@ -56,14 +56,38 @@ namespace SmallProERP.API.Controllers
 
         // GET /api/purchase-orders/status/{status}
         // Status: 1=Draft, 2=Sent, 3=Received
-        [HttpGet("status/{status:int}")]
-        public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetByStatus(int status)
+        [HttpGet("status/{status}")]
+        public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetByStatus(string status)
         {
-            if (!Enum.IsDefined(typeof(POStatus), status))
-                return BadRequest(new { message = "Invalid status value. Valid values: 1=Draft, 2=Sent, 3=Received" });
+            if (int.TryParse(status, out _))
+            {
+                return BadRequest(new
+                {
+                    message = "Status must be text (Draft, Sent, Received), not a number"
+                });
+            }
 
+            
+            if (!Enum.TryParse<POStatus>(status, true, out var poStatus))
+            {
+                var validStatuses = string.Join(", ", Enum.GetNames(typeof(POStatus)));
+                return BadRequest(new
+                {
+                    message = $"Invalid status '{status}'. Valid statuses are: {validStatuses}"
+                });
+            }
+
+            
+            if (!Enum.IsDefined(typeof(POStatus), poStatus))
+            {
+                var validStatuses = string.Join(", ", Enum.GetNames(typeof(POStatus)));
+                return BadRequest(new
+                {
+                    message = $"Invalid status. Valid statuses are: {validStatuses}"
+                });
+            }
             var tenantId = GetTenantId();
-            var purchaseOrders = await _purchaseOrderService.GetByStatusAsync((POStatus)status, tenantId);
+            var purchaseOrders = await _purchaseOrderService.GetByStatusAsync(poStatus, tenantId);
             return Ok(purchaseOrders);
         }
 

@@ -32,8 +32,8 @@ namespace SmallProERP.Models.DTOs.Auth
         public string? PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Role is required")]
-        public required UserRole Role { get; set; }
+        public required string Role { get; set; }
 
-        
+
     }       
 }

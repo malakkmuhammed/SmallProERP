@@ -9,6 +9,7 @@ using SmallProERP.BLL.Services.Implementations;
 using SmallProERP.BLL.Services.Interfaces;
 using SmallProERP.DAL.Data;
 using SmallProERP.Models.Entities;
+using SmallProERP.Models.Enums;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -152,6 +153,33 @@ var app = builder.Build();
 // -------------------------
 // Middleware
 // -------------------------
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
+
+        var roles = Enum.GetNames(typeof(UserRole));
+
+        foreach (var roleName in roles)
+        {
+            var roleExists = await roleManager.RoleExistsAsync(roleName);
+
+            if (!roleExists)
+            {
+                await roleManager.CreateAsync(new IdentityRole<int>(roleName));
+                Console.WriteLine($"✅ Role '{roleName}' created");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Error seeding roles");
+    }
+}
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
