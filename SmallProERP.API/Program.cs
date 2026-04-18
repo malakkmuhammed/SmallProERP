@@ -42,6 +42,15 @@ builder.Services.AddScoped<ISaleService, SaleService>();
 
 builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+//AI groq
+builder.Services.AddHttpClient("Groq", client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+//AI
+builder.Services.AddScoped<IOcrService, OcrService>();
+builder.Services.AddScoped<IAiInsightService, AiInsightService>();
+builder.Configuration.AddUserSecrets<Program>();
 
 // -------------------------
 // Identity

@@ -10,5 +10,9 @@
     <ProjectReference Include="..\SmallProERP.DAL\SmallProERP.DAL.csproj" />
     <ProjectReference Include="..\SmallProERP.Models\SmallProERP.Models.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
 </Project>

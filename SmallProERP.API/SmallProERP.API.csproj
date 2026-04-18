@@ -19,5 +19,9 @@
     <ProjectReference Include="..\SmallProERP.BLL\SmallProERP.BLL.csproj" />
     <ProjectReference Include="..\SmallProERP.Models\SmallProERP.Models.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\" />
+  </ItemGroup>
 
 </Project>

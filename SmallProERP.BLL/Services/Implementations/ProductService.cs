@@ -168,7 +168,7 @@ namespace SmallProERP.BLL.Services.Implementations
                 throw new InvalidOperationException(
                     "Cannot delete product that has inventory movement history.");
             }
-            if (product.QuotationItems?.Any() == true)  // ⭐ ADDED
+            if (product.QuotationItems?.Any() == true)  
             {
                 throw new InvalidOperationException(
                     "Cannot delete product that has been quoted to customers.");

@@ -159,11 +159,11 @@ namespace SmallProERP.BLL.Services.Implementations
             if (supplier == null)
                 return false;
 
-            if (supplier.Products?.Any() == true)
-            {
-                throw new InvalidOperationException(
-                    "Cannot delete supplier that has products. Please reassign or delete products first.");
-            }
+            //if (supplier.Products?.Any() == true)
+            //{
+            //    throw new InvalidOperationException(
+            //        "Cannot delete supplier that has products. Please reassign or delete products first.");
+            //}
 
             if (supplier.PurchaseOrders?.Any() == true)
             {
