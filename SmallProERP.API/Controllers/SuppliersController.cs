@@ -35,6 +35,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<SupplierDto>>> GetAll()
         {
             var tenantId = GetTenantId();
@@ -43,6 +44,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("search")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<SupplierDto>>> Search([FromQuery] string term)
         {
             if (string.IsNullOrWhiteSpace(term))
@@ -54,6 +56,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<SupplierDto>> GetById(int id)
         {
             var tenantId = GetTenantId();
@@ -66,6 +69,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("{id:int}/details")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<SupplierDetailsDto>> GetDetails(int id)
         {
             var tenantId = GetTenantId();
@@ -78,7 +82,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<SupplierDto>> Create([FromBody] CreateSupplierDto dto)
         {
             if (!ModelState.IsValid)
@@ -94,7 +98,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateSupplierDto dto)
         {
             if (!ModelState.IsValid)
@@ -110,7 +114,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Delete(int id)
         {
             try

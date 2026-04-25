@@ -103,10 +103,23 @@ namespace SmallProERP.BLL.Services.Implementations
 
         public async Task<bool> DeleteAsync(int id,int tenantid)
         {
-            var customer = await FindByIdAsync(id, tenantid);
+            var customer = await _context.Customers
+                .Include(c=>c.Sales)
+                .Include(c=>c.Quotations)
+                .FirstOrDefaultAsync(c => c.CustomerId == id && c.TenantId == tenantid);
 
             if (customer is null)
                 return false;
+            if (customer.Sales?.Any() == true)
+            {
+                throw new InvalidOperationException(
+                    "Cannot delete customer that has sales history.");
+            }
+            if (customer.Quotations?.Any() == true)
+            {
+                throw new InvalidOperationException(
+                    "Cannot delete customer that has quotations history.");
+            }
 
             _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();

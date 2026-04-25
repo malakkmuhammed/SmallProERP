@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SmallProERP.BLL.Services.Implementations;
 using SmallProERP.BLL.Services.Interfaces;
 using SmallProERP.Models.DTOs.CustomerDtos;
 using SmallProERP.Models.Entities;
@@ -6,6 +8,7 @@ using SmallProERP.Models.Enums;
 
 namespace SmallProERP.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/customers")]
     public class CustomersController : ControllerBase
@@ -30,6 +33,7 @@ namespace SmallProERP.API.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<IEnumerable<CustomerDto>>> GetAll( 
             [FromQuery] string? status = null,
             [FromQuery] string? search = null)
@@ -56,6 +60,7 @@ namespace SmallProERP.API.Controllers
 
  
         [HttpGet("statistics")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<CustomerStatisticsDto>> GetStatistics()
         {
             var tenantId = GetTenantId();
@@ -65,6 +70,7 @@ namespace SmallProERP.API.Controllers
 
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<CustomerDto>> GetById(int id)
         {
             var tenantId = GetTenantId();
@@ -78,6 +84,7 @@ namespace SmallProERP.API.Controllers
 
    
         [HttpPost]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<CustomerDto>> Create([FromBody] CreateCustomerDto dto)
         {
             var tenantId = GetTenantId();
@@ -93,6 +100,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCustomerDto dto)
         {
             var tenantId = GetTenantId();
@@ -109,19 +117,29 @@ namespace SmallProERP.API.Controllers
 
    
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> Delete(int id)
         {
-            var tenantId = GetTenantId();
-            var success = await _customerService.DeleteAsync(id, tenantId);
+            try
+            {
+                var tenantId = GetTenantId();
+                var success = await _customerService.DeleteAsync(id, tenantId);
 
-            if (!success)
-                return NotFound(new { message = $"Customer with ID {id} was not found." });
+                if (!success)
+                    return NotFound(new { message = $"Customer with ID {id} not found" });
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
         }
 
     
         [HttpPatch("{id:int}/status")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> ChangeStatus(
             int id,
             [FromBody] ChangeCustomerStatusDto dto)

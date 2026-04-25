@@ -30,6 +30,7 @@ namespace SmallProERP.API.Controllers
         
 
         [HttpGet("inventory-overview")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<InventoryOverviewDto>> GetInventoryOverview()
         {
             var tenantId = GetTenantId();
@@ -37,6 +38,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("purchase-orders-overview")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<PurchaseOrdersOverviewDto>> GetPurchaseOrdersOverview()
         {
             var tenantId = GetTenantId();
@@ -44,6 +46,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("suppliers-overview")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<SuppliersOverviewDto>> GetSuppliersOverview()
         {
             var tenantId = GetTenantId();
@@ -51,6 +54,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("low-stock-alerts")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<IEnumerable<LowStockAlertDto>>> GetLowStockAlerts()
         {
             var tenantId = GetTenantId();
@@ -58,6 +62,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("recent-activities")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<IEnumerable<RecentActivityDto>>> GetRecentActivities(
             [FromQuery] int limit = 10)
         {
@@ -69,6 +74,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("inventory-by-category")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<InventoryByCategoryDto>> GetInventoryByCategory()
         {
             var tenantId = GetTenantId();
@@ -76,6 +82,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("purchase-trends")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<PurchaseTrendsDto>> GetPurchaseTrends(
             [FromQuery] int months = 6)
         {
@@ -87,6 +94,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("top-suppliers")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<IEnumerable<TopSupplierDto>>> GetTopSuppliers(
             [FromQuery] int limit = 5)
         {
@@ -98,6 +106,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("top-products")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<IEnumerable<TopProductDto>>> GetTopProducts(
             [FromQuery] int limit = 10)
         {
@@ -109,6 +118,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("movements-by-type")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<MovementsByTypeDto>> GetMovementsByType()
         {
             var tenantId = GetTenantId();
@@ -119,6 +129,7 @@ namespace SmallProERP.API.Controllers
 
        
         [HttpGet("sales-overview")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<SalesOverviewDto>> GetSalesOverview()
         {
             var tenantId = GetTenantId();
@@ -127,6 +138,7 @@ namespace SmallProERP.API.Controllers
 
        
         [HttpGet("top-customers")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<IEnumerable<TopCustomerDto>>> GetTopCustomers(
             [FromQuery] int limit = 5)
         {
@@ -139,6 +151,7 @@ namespace SmallProERP.API.Controllers
 
     
         [HttpGet("sales-trends")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<SalesTrendsDto>> GetSalesTrends(
             [FromQuery] int months = 6)
         {
@@ -151,6 +164,7 @@ namespace SmallProERP.API.Controllers
 
       
         [HttpGet("crm-pipeline")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<CrmPipelineDto>> GetCrmPipeline()
         {
             var tenantId = GetTenantId();
@@ -159,6 +173,7 @@ namespace SmallProERP.API.Controllers
 
      
         [HttpGet("recent-invoices")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<IEnumerable<RecentInvoiceDto>>> GetRecentInvoices(
             [FromQuery] int limit = 5)
         {
@@ -171,6 +186,7 @@ namespace SmallProERP.API.Controllers
 
     
         [HttpGet("sales-comparison")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<SalesComparisonDto>> GetSalesComparison()
         {
             var tenantId = GetTenantId();
@@ -179,6 +195,7 @@ namespace SmallProERP.API.Controllers
 
       
         [HttpGet("best-selling-products")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult<IEnumerable<BestSellingProductDto>>> GetBestSellingProducts(
             [FromQuery] int limit = 10)
         {

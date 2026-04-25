@@ -34,6 +34,7 @@ namespace SmallProERP.API.Controllers
 
        
         [HttpGet]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<IEnumerable<SaleDto>>> GetAll(
             [FromQuery] string? search = null)
         {
@@ -45,6 +46,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("statistics")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<SaleStatisticsDto>> GetStatistics()
         {
             var tenantId = GetTenantId();
@@ -55,6 +57,7 @@ namespace SmallProERP.API.Controllers
 
  
         [HttpGet("unpaid-alerts")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<IEnumerable<UnpaidInvoiceAlertDto>>> GetUnpaidAlerts()
         {
             var tenantId = GetTenantId();
@@ -65,6 +68,7 @@ namespace SmallProERP.API.Controllers
 
    
         [HttpGet("customer/{customerId:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<IEnumerable<SaleDto>>> GetByCustomerId(int customerId)
         {
             var tenantId = GetTenantId();
@@ -75,6 +79,7 @@ namespace SmallProERP.API.Controllers
 
         
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<SaleDto>> GetById(int id)
         {
             var tenantId = GetTenantId();
@@ -90,6 +95,7 @@ namespace SmallProERP.API.Controllers
 
       
         [HttpPost]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<SaleDto>> Create([FromBody] CreateSaleDto dto)
         {
             if (!ModelState.IsValid)
@@ -112,6 +118,7 @@ namespace SmallProERP.API.Controllers
 
     
         [HttpPost("{id:int}/items")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<SaleDto>> AddItem(int id, [FromBody] AddSaleItemDto dto)
         {
             if (!ModelState.IsValid)
@@ -133,6 +140,7 @@ namespace SmallProERP.API.Controllers
 
     
         [HttpPut("{id:int}/items/{itemId:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<SaleDto>> UpdateItem(
             int id, int itemId, [FromBody] UpdateSaleItemInlineDto dto)
         {
@@ -158,6 +166,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpDelete("{id:int}/items/{itemId:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<SaleDto>> RemoveItem(int id, int itemId)
         {
             var tenantId = GetTenantId();
@@ -180,6 +189,7 @@ namespace SmallProERP.API.Controllers
 
         
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateSaleDto dto)
         {
             if (!ModelState.IsValid)
@@ -205,6 +215,7 @@ namespace SmallProERP.API.Controllers
 
     
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> Delete(int id)
         {
             var tenantId = GetTenantId();
@@ -220,6 +231,7 @@ namespace SmallProERP.API.Controllers
 
    
         [HttpPatch("{id:int}/paid")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> MarkPaid(int id, [FromBody] MarkSalePaidDto dto)
         {
             if (!ModelState.IsValid)

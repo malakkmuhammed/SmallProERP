@@ -36,8 +36,9 @@ namespace SmallProERP.API.Controllers
             return int.Parse(tenantIdClaim.Value);
         }
 
-        // GET /api/purchase-orders
+        
         [HttpGet]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetAll()
         {
             var tenantId = GetTenantId();
@@ -45,8 +46,9 @@ namespace SmallProERP.API.Controllers
             return Ok(purchaseOrders);
         }
 
-        // GET /api/purchase-orders/pending
+        
         [HttpGet("pending")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetPending()
         {
             var tenantId = GetTenantId();
@@ -54,9 +56,9 @@ namespace SmallProERP.API.Controllers
             return Ok(purchaseOrders);
         }
 
-        // GET /api/purchase-orders/status/{status}
-        // Status: 1=Draft, 2=Sent, 3=Received
+        
         [HttpGet("status/{status}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetByStatus(string status)
         {
             if (int.TryParse(status, out _))
@@ -91,8 +93,9 @@ namespace SmallProERP.API.Controllers
             return Ok(purchaseOrders);
         }
 
-        // GET /api/purchase-orders/supplier/{supplierId}
+        
         [HttpGet("supplier/{supplierId:int}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<PurchaseOrderDto>>> GetBySupplier(int supplierId)
         {
             var tenantId = GetTenantId();
@@ -100,8 +103,9 @@ namespace SmallProERP.API.Controllers
             return Ok(purchaseOrders);
         }
 
-        // GET /api/purchase-orders/{id}
+        
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<PurchaseOrderDto>> GetById(int id)
         {
             var tenantId = GetTenantId();
@@ -113,9 +117,9 @@ namespace SmallProERP.API.Controllers
             return Ok(purchaseOrder);
         }
 
-        // POST /api/purchase-orders
+        
         [HttpPost]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<PurchaseOrderDto>> Create([FromBody] CreatePurchaseOrderDto dto)
         {
             if (!ModelState.IsValid)
@@ -137,9 +141,9 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // PUT /api/purchase-orders/{id}
+        
         [HttpPut("{id:int}")]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdatePurchaseOrderDto dto)
         {
             if (!ModelState.IsValid)
@@ -161,9 +165,9 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // DELETE /api/purchase-orders/{id}
+        
         [HttpDelete("{id:int}")]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -182,9 +186,9 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // POST /api/purchase-orders/{id}/send
+        
         [HttpPost("{id:int}/send")]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Send(int id)
         {
             try
@@ -203,9 +207,9 @@ namespace SmallProERP.API.Controllers
             }
         }
 
-        // POST /api/purchase-orders/{id}/receive
+        
         [HttpPost("{id:int}/receive")]
-        //[Authorize(Roles = "Admin,Manager,InventoryManager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Receive(int id, [FromBody] ReceivePurchaseOrderDto dto)
         {
             if (!ModelState.IsValid)
@@ -226,9 +230,9 @@ namespace SmallProERP.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-        // GET /api/purchase-orders/{id}/document
+        
         [HttpGet("{id:int}/document")]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<PurchaseOrderDocumentDto>> GetDocument(int id)
         {
             try

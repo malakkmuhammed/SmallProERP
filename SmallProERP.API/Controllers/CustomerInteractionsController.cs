@@ -8,7 +8,7 @@ using SmallProERP.Models.Enums;
 namespace SmallProERP.API.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/customerinteractions")]
     public class CustomerInteractionsController : ControllerBase
@@ -32,6 +32,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<IEnumerable<CustomerInteractionDto>>> GetAll()
         {
             var tenantId = GetTenantId();
@@ -41,6 +42,7 @@ namespace SmallProERP.API.Controllers
 
 
         [HttpGet("customer/{customerId:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<IEnumerable<CustomerInteractionDto>>> GetByCustomerId(
             int customerId,
             [FromQuery] string? type = null)
@@ -68,6 +70,7 @@ namespace SmallProERP.API.Controllers
 
        
         [HttpGet("customer/{customerId:int}/summary")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<CustomerInteractionSummaryDto>> GetSummaryByCustomerId(
             int customerId)
         {
@@ -81,6 +84,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<CustomerInteractionDto>> GetById(int id)
         {
             var tenantId = GetTenantId();
@@ -94,6 +98,7 @@ namespace SmallProERP.API.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<CustomerInteractionDto>> Create(
             [FromBody] CreateCustomerInteractionDto dto)
         {
@@ -118,6 +123,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> Update(
             int id,
             [FromBody] UpdateCustomerInteractionDto dto)
@@ -144,6 +150,7 @@ namespace SmallProERP.API.Controllers
 
  
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> Delete(int id)
         {
             var tenantId = GetTenantId();

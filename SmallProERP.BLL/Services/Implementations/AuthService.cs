@@ -198,5 +198,41 @@ namespace SmallProERP.BLL.Services.Implementations
 
             return (true, "Login successful", response);
         }
+        public async Task<bool> ResetUserPasswordAsync(string username, string newPassword, int adminTenantId)
+        {
+            
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            
+            if (user.TenantId != adminTenantId)
+            {
+                return false;
+            }
+
+            
+            await _userManager.RemovePasswordAsync(user);
+            var result = await _userManager.AddPasswordAsync(user, newPassword);
+
+            return result.Succeeded;
+        }
+        public async Task<bool> LogoutAsync(int userId)
+        {
+            // For JWT tokens, logout is typically handled client-side by deleting the token
+            // This method can be used for future enhancements like:
+            // - Token blacklisting
+            // - Logging user activity
+            // - Invalidating refresh tokens
+
+            // For now, just log the logout event (optional)
+            // You can add logging here if needed
+
+            return await Task.FromResult(true);
+        }
+
     }
 }

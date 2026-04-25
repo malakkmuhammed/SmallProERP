@@ -37,6 +37,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("movements")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<InventoryMovementDto>>> GetAllMovements()
         {
             var tenantId = GetTenantId();
@@ -45,6 +46,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("movements/product/{productId:int}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<InventoryMovementDto>>> GetMovementsByProduct(int productId)
         {
             var tenantId = GetTenantId();
@@ -53,6 +55,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("movements/type/{type}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<InventoryMovementDto>>> GetMovementsByType(string type)
         {
             
@@ -90,6 +93,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("movements/date-range")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<InventoryMovementDto>>> GetMovementsByDateRange(
             [FromQuery] DateTime from,
             [FromQuery] DateTime to)

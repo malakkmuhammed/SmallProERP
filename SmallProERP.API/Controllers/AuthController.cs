@@ -151,5 +151,69 @@ namespace SmallProERP.API.Controllers
                 companyName
             });
         }
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            // Extract UserId from JWT token
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized(new { message = "Invalid token" });
+            }
+
+            var userId = int.Parse(userIdClaim);
+
+            // Call service (for logging or future token blacklisting)
+            await _authService.LogoutAsync(userId);
+
+            return Ok(new { message = "Logged out successfully. Please delete your token." });
+        }
+        [HttpPost("reset-password")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ResetPassword([FromBody] PasswordResetDto dto)
+        {
+            
+            if (string.IsNullOrWhiteSpace(dto.Username))
+            {
+                return BadRequest(new { message = "Username is required" });
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.NewPassword))
+            {
+                return BadRequest(new { message = "New password is required" });
+            }
+
+            
+            var tenantIdClaim = User.FindFirst("TenantId")?.Value;
+
+            if (string.IsNullOrEmpty(tenantIdClaim))
+            {
+                return Unauthorized(new { message = "Invalid token" });
+            }
+
+            var adminTenantId = int.Parse(tenantIdClaim);
+
+            
+            var result = await _authService.ResetUserPasswordAsync(
+                dto.Username,
+                dto.NewPassword,
+                adminTenantId
+            );
+
+            if (!result)
+            {
+                return NotFound(new { message = "User not found or does not belong to your company" });
+            }
+
+            return Ok(new
+            {
+                message = "Password reset successfully",
+                username = dto.Username
+            });
+        }
     }
 }
+
+

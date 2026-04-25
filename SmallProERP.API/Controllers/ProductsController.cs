@@ -54,6 +54,7 @@ namespace SmallProERP.API.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll()
         {
             var tenantId = GetTenantId();
@@ -62,6 +63,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("low-stock")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetLowStock()
         {
             var tenantId = GetTenantId();
@@ -70,6 +72,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("search")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> Search([FromQuery] string term)
         {
             if (string.IsNullOrWhiteSpace(term))
@@ -81,6 +84,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("code/{code}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<ProductDto>> GetByCode(string code)
         {
             var tenantId = GetTenantId();
@@ -93,6 +97,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("category/{category}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetByCategory(string category)
         {
             var tenantId = GetTenantId();
@@ -101,6 +106,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("supplier/{supplierId:int}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetBySupplier(int supplierId)
         {
             var tenantId = GetTenantId();
@@ -109,6 +115,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("categories")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<IEnumerable<string>>> GetCategories()
         {
             var tenantId = GetTenantId();
@@ -117,7 +124,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("inventory-value")]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<object>> GetInventoryValue()
         {
             var tenantId = GetTenantId();
@@ -126,6 +133,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<ProductDto>> GetById(int id)
         {
             var tenantId = GetTenantId();
@@ -138,7 +146,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin,Manager,InventoryManager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<ActionResult<ProductDto>> Create([FromBody] CreateProductDto dto)
         {
             if (!ModelState.IsValid)
@@ -161,7 +169,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        //[Authorize(Roles = "Admin,Manager,InventoryManager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto dto)
         {
             if (!ModelState.IsValid)
@@ -184,7 +192,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        //[Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -204,7 +212,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpPost("adjust-stock")]
-        //[Authorize(Roles = "Admin,Manager,InventoryManager")]
+        [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> AdjustStock([FromBody] StockAdjustmentDto dto)
         {
             if (!ModelState.IsValid)

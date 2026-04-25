@@ -35,6 +35,7 @@ namespace SmallProERP.API.Controllers
 
        
         [HttpGet]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<IEnumerable<QuotationSummaryDto>>> GetAll(
             [FromQuery] string? search = null)
         {
@@ -45,6 +46,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpGet("statistics")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<QuotationStatisticsDto>> GetStatistics()
         {
             var tenantId = GetTenantId();
@@ -55,6 +57,7 @@ namespace SmallProERP.API.Controllers
 
 
         [HttpGet("customer/{customerId:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<IEnumerable<QuotationSummaryDto>>> GetByCustomerId(
             int customerId)
         {
@@ -66,6 +69,7 @@ namespace SmallProERP.API.Controllers
 
         
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<QuotationDto>> GetById(int id)
         {
             var tenantId = GetTenantId();
@@ -81,6 +85,7 @@ namespace SmallProERP.API.Controllers
 
      
         [HttpPost]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<QuotationDto>> Create([FromBody] CreateQuotationDto dto)
         {
             if (!ModelState.IsValid)
@@ -103,6 +108,7 @@ namespace SmallProERP.API.Controllers
 
      
         [HttpPost("{id:int}/items")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<QuotationDto>> AddItem(
             int id, [FromBody] AddQuotationItemDto dto)
         {
@@ -125,6 +131,7 @@ namespace SmallProERP.API.Controllers
 
        
         [HttpPut("{id:int}/items/{itemId:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<QuotationDto>> UpdateItem(
             int id, int itemId, [FromBody] UpdateQuotationItemInlineDto dto)
         {
@@ -150,6 +157,7 @@ namespace SmallProERP.API.Controllers
         }
 
         [HttpDelete("{id:int}/items/{itemId:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<QuotationDto>> RemoveItem(int id, int itemId)
         {
             var tenantId = GetTenantId();
@@ -172,6 +180,7 @@ namespace SmallProERP.API.Controllers
 
        
         [HttpPost("{id:int}/convert")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<ActionResult<SaleDto>> ConvertToSale(
             int id, [FromBody] ConvertQuotationToSaleDto dto)
         {
@@ -191,6 +200,7 @@ namespace SmallProERP.API.Controllers
 
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateQuotationDto dto)
         {
             if (!ModelState.IsValid)
@@ -216,6 +226,7 @@ namespace SmallProERP.API.Controllers
 
       
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> Delete(int id)
         {
             var tenantId = GetTenantId();
@@ -231,6 +242,7 @@ namespace SmallProERP.API.Controllers
 
 
         [HttpPatch("{id:int}/status")]
+        [Authorize(Roles = "Admin,Salesperson")]
         public async Task<IActionResult> ChangeStatus(
             int id, [FromBody] ChangeQuotationStatusDto dto)
         {
